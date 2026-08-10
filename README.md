@@ -253,15 +253,6 @@ pip install pandas numpy plotly matplotlib pytz nltk scikit-learn
    - `.png` file for the Matplotlib visualization (Task 4)
 
 ---
-
-<<<<<<< HEAD
-## 🌐 Hosted Dashboard
-A hosted dashboard portal has been created to provide access to all visualizations from a single webpage.
-=======
-
->>>>>>> c384fb9 (Final README updates and cleanup)
-
-
 ### Time Window Enforcement
 
 The internship requirements specify that each visualization must only be accessible during a particular IST time window.
