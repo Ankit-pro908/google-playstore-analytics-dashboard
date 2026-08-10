@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Play Store Analytics Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>Google Play Store Analytics Dashboard</h1>
+    <p>ElevanceSkills Internship Submission</p>
+</header>
+
+<section class="overview">
+    <h2>Project Overview</h2>
+    <p>
+        This project extends the Google Play Store Analytics training project.
+        Six interactive visualizations were created using the same cleaned dataset
+        following all internship requirements.
+    </p>
+</section>
+
+<section class="task">
+    <h2>Task 1 - Bubble Chart</h2>
+    <p>Available: 5 PM – 7 PM IST</p>
+    <button onclick="openDashboard(17,19,'outputs/task1_bubble_chart.html')">
+        Open Dashboard
+    </button>
+</section>
+
+<section class="task">
+    <h2>Task 2 - Choropleth Map</h2>
+    <p>Available: 6 PM – 8 PM IST</p>
+    <button onclick="openDashboard(18,20,'outputs/task2_choropleth.html')">
+        Open Dashboard
+    </button>
+</section>
+
+<section class="task">
+    <h2>Task 3 - Time Series Chart</h2>
+    <p>Available: 6 PM – 9 PM IST</p>
+    <button onclick="openDashboard(18,21,'outputs/task3_timeseries.html')">
+        Open Dashboard
+    </button>
+</section>
+
+<section class="task">
+    <h2>Task 4 - Stacked Area Chart</h2>
+    <p>Available: 4 PM – 6 PM IST</p>
+    <button onclick="openDashboard(16,18,'outputs/task4_stacked_area.png')">
+        Open Chart
+    </button>
+</section>
+
+<section class="task">
+    <h2>Task 5 - Grouped Bar Chart</h2>
+    <p>Available: 3 PM – 5 PM IST</p>
+    <button onclick="openDashboard(15,17,'outputs/task5_grouped_bar.html')">
+        Open Dashboard
+    </button>
+</section>
+
+<section class="task">
+    <h2>Task 6 - Dual Axis Chart</h2>
+    <p>Available: 1 PM – 2 PM IST</p>
+    <button onclick="openDashboard(13,14,'outputs/task6_dual_axis.html')">
+        Open Dashboard
+    </button>
+</section>
+
+<footer>
+    <p>Created by Ankit Pattanayak</p>
+</footer>
+
+<script>
+
+function getISTHour() {
+
+    const now = new Date();
+
+    const ist = new Date(
+        now.toLocaleString(
+            "en-US",
+            { timeZone: "Asia/Kolkata" }
+        )
+    );
+
+    return ist.getHours();
+}
+
+function openDashboard(start,end,file){
+
+    const hour = getISTHour();
+
+    if(hour >= start && hour < end){
+
+        window.open(file,"_blank");
+
+    } else {
+
+        alert(
+            `This dashboard is available only between ${formatHour(start)} and ${formatHour(end)} IST`
+        );
+
+    }
+}
+
+function formatHour(hour){
+
+    if(hour === 12) return "12 PM";
+
+    if(hour > 12) return (hour-12) + " PM";
+
+    return hour + " AM";
+}
+
+</script>
+
+</body>
+</html>
