@@ -242,13 +242,8 @@ pip install pandas numpy plotly matplotlib pytz nltk scikit-learn
    - `.png` file for the Matplotlib visualization (Task 4)
 
 ---
-Hosted Dashboard:
-https://ankit-pro908.github.io/google-playstore-analytics-dashboard/
 
-GitHub Repository:
-https://github.com/Ankit-pro908/google-playstore-analytics-dashboard
 ## 🌐 Hosted Dashboard
-
 A hosted dashboard portal has been created to provide access to all visualizations from a single webpage.
 
 ### Live Website
