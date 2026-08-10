@@ -14,8 +14,8 @@ The training project involved cleaning and merging the Google Play Store apps da
 
 ## 🔗 Live Project / Links
 
-- **GitHub Repository:** [Add your repo link here]
-- **Live Website / Hosted Dashboard:** [Add your website link here]
+- **GitHub Repository:** https://github.com/Ankit-pro908/google-playstore-analytics-dashboard
+- **Live Website / Hosted Dashboard:** https://ankit-pro908.github.io/google-playstore-analytics-dashboard/
 
 ---
 
@@ -25,6 +25,17 @@ The training project involved cleaning and merging the Google Play Store apps da
 |---|---|
 | `data/Play Store Data.csv` | App-level metadata — category, rating, size, installs, price, reviews, last updated, Android version, content rating |
 | `data/User Reviews.csv` | User review-level sentiment data — sentiment polarity and subjectivity per review |
+
+---
+## Repository Structure
+
+data/          -> datasets
+outputs/       -> generated charts
+dashboards/    -> training dashboards
+internship.ipynb -> internship implementation
+index.html     -> hosted dashboard homepage
+style.css      -> dashboard styling
+README.md      -> project documentation
 
 ---
 
@@ -243,18 +254,13 @@ pip install pandas numpy plotly matplotlib pytz nltk scikit-learn
 
 ---
 
+<<<<<<< HEAD
 ## 🌐 Hosted Dashboard
 A hosted dashboard portal has been created to provide access to all visualizations from a single webpage.
+=======
 
-### Live Website
+>>>>>>> c384fb9 (Final README updates and cleanup)
 
-**Hosted Dashboard:**  
-(https://ankit-pro908.github.io/google-playstore-analytics-dashboard/)
-
-### GitHub Repository
-
-**Source Code Repository:**  
-(https://github.com/Ankit-pro908/google-playstore-analytics-dashboard)
 
 ### Time Window Enforcement
 
