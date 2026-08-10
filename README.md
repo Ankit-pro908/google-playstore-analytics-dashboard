@@ -90,7 +90,7 @@ The dataset has no `Country` column or any per-country breakdown of installs. A 
 **Output:** `outputs/task2_choropleth.html`
 
 
-**Status:** ⚠️ Uses a documented population-weighted proxy due to missing country-level data. "EVENTS" category spelling verified directly against the dataset — confirmed correct.
+**Status:** ✅ Uses a documented population-weighted proxy due to missing country-level data. "EVENTS" category spelling verified directly against the dataset — confirmed correct.
 
 ---
 
@@ -115,7 +115,7 @@ The dataset only has a single `Last Updated` date per app — there is no record
 
 **Output:** `outputs/task3_timeseries.html`
 
-**Status:** ⚠️ Uses `Last Updated` as a documented time proxy. Minor unreachable-translation note included.
+**Status:** ✅ Uses `Last Updated` as a documented time proxy. Minor unreachable-translation note included.
 
 ---
 
@@ -143,7 +143,7 @@ The dataset only has a single `Last Updated` date per app — there is no record
 
 **Output:** `outputs/task4_stacked_area.png`
 
-**Status:** ⚠️ Uses documented time proxy + switched to Matplotlib (approved by mentor) to satisfy the opacity requirement literally.
+**Status:** ✅ Uses documented time proxy + switched to Matplotlib (approved by mentor) to satisfy the opacity requirement literally.
 
 ---
 
@@ -186,7 +186,7 @@ The dataset only has a single `Last Updated` date per app — there is no record
 
 **Output:** `outputs/task6_dual_axis.html`
 
-**Status:** ⚠️ Uses a documented revenue proxy; free/paid filter logic confirmed with mentor.
+**Status:** ✅ Uses a documented revenue proxy; free/paid filter logic confirmed with mentor.
 
 ---
 
@@ -219,26 +219,88 @@ Per task requirements, each chart is only rendered within a specific IST time wi
 | 6 — Dual-Axis | 1 PM – 2 PM |
 
 ---
-
 ## 🛠️ How to Run
 
+### Local Execution
+
 1. Clone this repository and ensure `data/Play Store Data.csv` and `data/User Reviews.csv` are present in the `data/` folder.
+
 2. Install dependencies:
+
 ```bash
-   pip install pandas numpy plotly matplotlib pytz nltk scikit-learn
+pip install pandas numpy plotly matplotlib pytz nltk scikit-learn
 ```
-3. Open `internship.ipynb` in Jupyter Notebook / VS Code.
+
+3. Open `internship.ipynb` in Jupyter Notebook or VS Code.
+
 4. Run all cells in order (**Kernel → Restart & Run All** recommended to avoid cell-order dependency issues).
-5. Each chart renders only within its designated IST time window; outside that window, a placeholder message is shown instead. Rendered outputs are also saved to the `outputs/` folder (`.html` for Plotly charts, `.png` for the Matplotlib chart in Task 4).
+
+5. Each visualization follows the internship-specified IST time window restrictions implemented within the notebook logic. Outside the designated time window, the notebook displays an informational message instead of rendering the chart.
+
+6. Generated outputs are saved to the `outputs/` folder:
+   - `.html` files for Plotly visualizations
+   - `.png` file for the Matplotlib visualization (Task 4)
+
+---
+Hosted Dashboard:
+https://ankit-pro908.github.io/google-playstore-analytics-dashboard/
+
+GitHub Repository:
+https://github.com/Ankit-pro908/google-playstore-analytics-dashboard
+## 🌐 Hosted Dashboard
+
+A hosted dashboard portal has been created to provide access to all visualizations from a single webpage.
+
+### Live Website
+
+**Hosted Dashboard:**  
+(https://ankit-pro908.github.io/google-playstore-analytics-dashboard/)
+
+### GitHub Repository
+
+**Source Code Repository:**  
+(https://github.com/Ankit-pro908/google-playstore-analytics-dashboard)
+
+### Time Window Enforcement
+
+The internship requirements specify that each visualization must only be accessible during a particular IST time window.
+
+Since GitHub Pages is a static hosting platform and cannot execute Python code after deployment, the hosted dashboard implements additional browser-side validation using JavaScript and the `Asia/Kolkata` timezone.
+
+This ensures:
+
+- Dashboard access is checked dynamically in real time.
+- Users can only open a dashboard during its allowed IST time window.
+- Outside the allowed time window, an informational message is displayed.
+- The original notebook implementation remains unchanged and continues to satisfy the internship requirements.
+
+This approach preserves the intended behavior of all six tasks in both the notebook environment and the hosted dashboard.
 
 ---
 
 ## 🧰 Tech Stack
 
-- **Python** — Pandas, NumPy
-- **Visualization** — Plotly (Tasks 1, 2, 3, 5, 6), Matplotlib (Task 4)
-- **NLP** — NLTK (VADER sentiment, from training project)
-- **Environment** — Jupyter Notebook / VS Code
+### Data Processing
+- Python
+- Pandas
+- NumPy
 
----
+### Visualization
+- Plotly (Tasks 1, 2, 3, 5, 6)
+- Matplotlib (Task 4)
 
+### NLP & Sentiment Analysis
+- NLTK (VADER Sentiment Analyzer)
+
+### Time Window Handling
+- pytz
+- datetime
+- JavaScript (Hosted Dashboard Time Validation)
+
+### Development Environment
+- Jupyter Notebook
+- VS Code
+
+### Deployment
+- GitHub
+- GitHub Pages
