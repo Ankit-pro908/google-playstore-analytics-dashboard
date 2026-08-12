@@ -38,7 +38,6 @@ style.css      -> dashboard styling
 README.md      -> project documentation
 
 ---
-
 ## 🧹 Data Cleaning Summary
 
 Performed once, upfront, in `internship.ipynb` (Cells 1–24), shared across all 6 tasks:
@@ -254,12 +253,7 @@ pip install pandas numpy plotly matplotlib pytz nltk scikit-learn
 
 ---
 
-<<<<<<< HEAD
-## 🌐 Hosted Dashboard
-A hosted dashboard portal has been created to provide access to all visualizations from a single webpage.
-=======
 
->>>>>>> c384fb9 (Final README updates and cleanup)
 
 
 ### Time Window Enforcement
