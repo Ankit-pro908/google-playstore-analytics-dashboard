@@ -258,6 +258,7 @@ Per task requirements, each chart is only rendered within a specific IST time wi
    - `.html` files for Plotly visualizations
    - `.png` file for the Matplotlib visualization (Task 4)
 
+---
 ### Time Window Enforcement
 
 The internship requirements specify that each visualization must only be accessible during a particular IST time window.
