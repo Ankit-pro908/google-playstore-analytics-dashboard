@@ -6,8 +6,8 @@ This project extends the **Google Play Store Analytics** training project comple
 
 The training project involved cleaning and merging the Google Play Store apps dataset with user review sentiment data. This internship submission builds 6 new visualizations on top of that same cleaned dataset, each with its own filtering logic, time-based visibility rules, and (where relevant) multilingual category labels.
 
-**Domain:** Data Analytics  
-**Tools:** Python, Pandas, Plotly, Matplotlib, Jupyter Notebook  
+**Domain:** Data Analytics
+**Tools:** Python, Pandas, Plotly, Matplotlib, Jupyter Notebook
 **Dataset:** Kaggle Google Play Store Dataset (`Play Store Data.csv`, `User Reviews.csv`)
 
 ---
@@ -26,8 +26,7 @@ The training project involved cleaning and merging the Google Play Store apps da
 | `data/Play Store Data.csv` | App-level metadata — category, rating, size, installs, price, reviews, last updated, Android version, content rating |
 | `data/User Reviews.csv` | User review-level sentiment data — sentiment polarity and subjectivity per review |
 
----
-## Repository Structure
+### Repository Structure
 
 data/          -> datasets
 outputs/       -> generated charts
@@ -38,6 +37,8 @@ style.css      -> dashboard styling
 README.md      -> project documentation
 
 ---
+---
+
 ## 🧹 Data Cleaning Summary
 
 Performed once, upfront, in `internship.ipynb` (Cells 1–24), shared across all 6 tasks:
@@ -73,10 +74,11 @@ Performed once, upfront, in `internship.ipynb` (Cells 1–24), shared across all
 - Beauty → Hindi (सौंदर्य), Business → Tamil (வணிகம்), Dating → German (Verabredung), shown via a separate `Category_Display` column so the underlying English `Category` stays intact for filtering/coloring logic
 - Time-gated to render only between 5–7 PM IST; outside this window, a message is shown instead
 
+**Post-review fix:** Initial version scaled bubble sizes purely linearly, causing low-install apps (e.g. Communication, Social, lower-rated Game apps) to render as barely-visible single pixels. Fixed by capping the maximum bubble size (`size_max=40`) and enforcing a visible minimum bubble size (`sizemin=4`) so every data point remains distinguishable regardless of install count.
+
 **Output:** `outputs/task1_bubble_chart.html`
 
-
-**Status:** ✅ No data limitations. Fully compliant with all stated filters.
+**Status:** ✅ Fully compliant with all stated filters. Bubble scaling issue identified in review resolved.
 
 ---
 
@@ -91,16 +93,20 @@ Performed once, upfront, in `internship.ipynb` (Cells 1–24), shared across all
 **⚠️ Data limitation — no country-level install data:**
 The dataset has no `Country` column or any per-country breakdown of installs. A choropleth's entire purpose is to show geographic variation, so a workaround was required.
 
-**Approach used:** Installs were distributed across countries using **population share as a weighting proxy** (`category total installs × country population / world population`), using `px.data.gapminder()` for population figures. This is a documented estimation technique, not real per-country data, and is clearly labeled as such in the notebook.
+**Approach used:** Installs were distributed across countries using **population share as a weighting proxy** (`category total installs × country population / world population`), using `px.data.gapminder()` for population figures. This is a documented estimation technique, not real per-country data — clearly disclosed both in the notebook and directly on the chart itself (title + on-chart annotation), so it cannot be mistaken for real geographic data at a glance.
 
-**Highlight logic:** Categories exceeding 1M installs get a red-bordered marker outline on the map. Note: since the top 5 categories are selected *because* they have the highest installs, all 5 exceed 1M by definition — every frame is highlighted, which is expected behavior, not a bug.
+**Post-review fixes applied:**
+1. **Highlight logic corrected** — The original condition (`installs > 1,000,000`) was always true for all 5 categories shown, since the top-5-by-installs selection guarantees each exceeds 1M by definition, making the highlight visually meaningless (every frame identical). Fixed by changing the threshold to installs ≥ 80% of the group's maximum, so highlighting now varies across categories instead of applying uniformly.
+2. **Highlight visibility fixed** — Previously, the >1M highlight only appeared in hover data, not as a visible map element. Fixed by adding visible marker border styling (red border for highlighted categories, gray for others) directly on the map shapes.
+3. **Disclosure clarity improved** — Estimation methodology is now disclosed directly on the chart itself (title + on-chart annotation), not just in a separate markdown note, so it can't be missed.
+
+**⚠️ Open concern (pending mentor decision):** Review feedback raised a more fundamental objection — that a choropleth map shouldn't present *any* estimated/proxy per-country data, regardless of disclosure, since the dataset has no real geographic install breakdown. This is a data-availability limitation, not a code bug, and cannot be fully resolved without a different dataset or a different chart type for this task. Awaiting mentor guidance on whether to retain the current (disclosed, estimated) choropleth, or replace it with a category-only bar chart/table that avoids the geographic-accuracy question entirely.
 
 **Insight:** Even as an estimate, the map consistently shows India and China with the highest projected installs — plausible given these are among the largest Android user bases globally.
 
 **Output:** `outputs/task2_choropleth.html`
 
-
-**Status:** ✅ Uses a documented population-weighted proxy due to missing country-level data. "EVENTS" category spelling verified directly against the dataset — confirmed correct.
+**Status:** ⚠️ Partially addressed — highlight logic, highlight visibility, and disclosure clarity all fixed; core data-availability objection still open, pending mentor decision.
 
 ---
 
@@ -117,7 +123,9 @@ The dataset has no `Country` column or any per-country breakdown of installs. A 
 **⚠️ Data limitation — no install-history log:**
 The dataset only has a single `Last Updated` date per app — there is no record of installs at different points in time. `Last Updated` month was used as a time-axis proxy, documented clearly in the notebook.
 
-**Consequence:** A sharp spike appears near mid-2018 in the chart — this reflects a clustering artifact (most apps were last updated shortly before the dataset was scraped), not real install growth. This is explicitly noted below the chart.
+**Post-review fix — chart readability:** One category (Communication) spiking to several billion installs in late 2018 compressed every other category into a flat line near zero on a linear axis, making the chart uninformative. Fixed by switching the Y-axis to a **logarithmic scale** (`update_yaxes(type="log")`), so all 8 categories remain visible and comparable regardless of scale differences.
+
+**Consequence:** A sharp spike still appears near mid-2018 even on the log scale — this reflects a clustering artifact (most apps were last updated shortly before the dataset was scraped), not real install growth. This is explicitly noted below the chart.
 
 **Contradiction noted:** The task also asks to translate "Dating" into German, but Dating starts with "D" and is excluded by the E/C/B category filter — so the German label can never actually appear on this chart. The translation mapping is kept in code for completeness but flagged as unreachable.
 
@@ -125,7 +133,7 @@ The dataset only has a single `Last Updated` date per app — there is no record
 
 **Output:** `outputs/task3_timeseries.html`
 
-**Status:** ✅ Uses `Last Updated` as a documented time proxy. Minor unreachable-translation note included.
+**Status:** ✅ Uses `Last Updated` as a documented time proxy. Log-scale fix applied for readability. Minor unreachable-translation note included.
 
 ---
 
@@ -153,7 +161,7 @@ The dataset only has a single `Last Updated` date per app — there is no record
 
 **Output:** `outputs/task4_stacked_area.png`
 
-**Status:** ✅ Uses documented time proxy + switched to Matplotlib (approved by mentor) to satisfy the opacity requirement literally.
+**Status:** ✅ Passed review. Uses documented time proxy + Matplotlib (mentor-approved) to satisfy the opacity requirement literally.
 
 ---
 
@@ -167,11 +175,11 @@ The dataset only has a single `Last Updated` date per app — there is no record
 - Average rating ≥ 4.0 (applied after the above filters)
 - Top 10 categories by total installs
 
-**Approach:** Dual-axis grouped bar chart (Average Rating on primary axis, Total Reviews on secondary axis), built using `make_subplots(secondary_y=True)` with explicit `offsetgroup` values — required because combining `barmode="group"` with a secondary y-axis via a simple layout dict causes Plotly to render fused/overlapping bars instead of properly grouped ones.
+**Approach:** Dual-axis grouped bar chart (Average Rating on primary axis, Total Reviews on secondary axis), built using `make_subplots(secondary_y=True)` with explicit `offsetgroup` values on each trace — required because combining `barmode="group"` with a secondary y-axis via a simple layout dict causes Plotly to render fused/overlapping bars instead of properly grouped ones, with both axes clearly visible on independent scales.
 
 **Output:** `outputs/task5_grouped_bar.html`
 
-**Status:** ✅ No data limitations. Filters applied before aggregation/ranking for internal consistency — confirmed with mentor.
+**Status:** ✅ No data limitations. Dual-axis rendering verified with fully separated, independently-scaled bars. Filters applied before aggregation/ranking for internal consistency — confirmed with mentor.
 
 ---
 
@@ -196,7 +204,7 @@ The dataset only has a single `Last Updated` date per app — there is no record
 
 **Output:** `outputs/task6_dual_axis.html`
 
-**Status:** ✅ Uses a documented revenue proxy; free/paid filter logic confirmed with mentor.
+**Status:** ✅ Passed review. Uses a documented revenue proxy; free/paid filter logic confirmed with mentor.
 
 ---
 
@@ -204,7 +212,11 @@ The dataset only has a single `Last Updated` date per app — there is no record
 
 | Limitation | Affected Tasks | How it was handled |
 |---|---|---|
-| No country-level install data | Task 2 | Population-weighted estimation using `px.data.gapminder()` |
+| Bubble sizes collapsing to invisible pixels for low-install apps | Task 1 | Applied `size_max` cap and `sizemin` floor for consistent visibility |
+| No country-level install data | Task 2 | Population-weighted estimation using `px.data.gapminder()`, disclosed on-chart |
+| Flat, uniform highlight logic (always true for top-5) | Task 2 | Fixed: relative threshold (≥80% of group max) + visible map border styling |
+| Choropleth built on estimated (not real) per-country data | Task 2 | Disclosed on-chart; open objection to using estimated data on a map — pending mentor decision |
+| Dominant category compressing others on linear scale | Task 3 | Switched Y-axis to logarithmic scale |
 | No install-history log (only `Last Updated`) | Tasks 3, 4 | `Last Updated` month used as a documented time-axis proxy |
 | Plotly can't vary opacity within one stacked band | Task 4 | Rebuilt in Matplotlib with per-segment `fill_between()` opacity |
 | No real Revenue column | Task 6 | `Price × Installs` used as a standard proxy |
@@ -229,40 +241,28 @@ Per task requirements, each chart is only rendered within a specific IST time wi
 | 6 — Dual-Axis | 1 PM – 2 PM |
 
 ---
+
 ## 🛠️ How to Run
 
 ### Local Execution
 
 1. Clone this repository and ensure `data/Play Store Data.csv` and `data/User Reviews.csv` are present in the `data/` folder.
-
 2. Install dependencies:
-
 ```bash
-pip install pandas numpy plotly matplotlib pytz nltk scikit-learn
+   pip install pandas numpy plotly matplotlib pytz nltk scikit-learn
 ```
-
 3. Open `internship.ipynb` in Jupyter Notebook or VS Code.
-
 4. Run all cells in order (**Kernel → Restart & Run All** recommended to avoid cell-order dependency issues).
-
 5. Each visualization follows the internship-specified IST time window restrictions implemented within the notebook logic. Outside the designated time window, the notebook displays an informational message instead of rendering the chart.
-
 6. Generated outputs are saved to the `outputs/` folder:
    - `.html` files for Plotly visualizations
    - `.png` file for the Matplotlib visualization (Task 4)
-
----
-
-
-
 
 ### Time Window Enforcement
 
 The internship requirements specify that each visualization must only be accessible during a particular IST time window.
 
-Since GitHub Pages is a static hosting platform and cannot execute Python code after deployment, the hosted dashboard implements additional browser-side validation using JavaScript and the `Asia/Kolkata` timezone.
-
-This ensures:
+Since GitHub Pages is a static hosting platform and cannot execute Python code after deployment, the hosted dashboard implements additional browser-side validation using JavaScript and the Asia/Kolkata timezone. This ensures:
 
 - Dashboard access is checked dynamically in real time.
 - Users can only open a dashboard during its allowed IST time window.
@@ -275,27 +275,9 @@ This approach preserves the intended behavior of all six tasks in both the noteb
 
 ## 🧰 Tech Stack
 
-### Data Processing
-- Python
-- Pandas
-- NumPy
-
-### Visualization
-- Plotly (Tasks 1, 2, 3, 5, 6)
-- Matplotlib (Task 4)
-
-### NLP & Sentiment Analysis
-- NLTK (VADER Sentiment Analyzer)
-
-### Time Window Handling
-- pytz
-- datetime
-- JavaScript (Hosted Dashboard Time Validation)
-
-### Development Environment
-- Jupyter Notebook
-- VS Code
-
-### Deployment
-- GitHub
-- GitHub Pages
+**Data Processing:** Python, Pandas, NumPy
+**Visualization:** Plotly (Tasks 1, 2, 3, 5, 6), Matplotlib (Task 4)
+**NLP & Sentiment Analysis:** NLTK (VADER Sentiment Analyzer)
+**Time Window Handling:** pytz, datetime, JavaScript (Hosted Dashboard Time Validation)
+**Development Environment:** Jupyter Notebook, VS Code
+**Deployment:** GitHub, GitHub Pages
